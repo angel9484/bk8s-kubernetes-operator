@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: building-block-name
+  labels:
+    app: buildingblock
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: buildingblock
+  minReadySeconds: 5
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: buildingblock
+    spec:
+      containers:
+        - name: building-block-name
+          image: "buildingblock"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /findProducts
+              port: http
+            initialDelaySeconds: 1
+            periodSeconds: 3
+            timeoutSeconds: 3
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /findProducts
+              port: http
+            initialDelaySeconds: 1
+            periodSeconds: 3
+            timeoutSeconds: 3
+          startupProbe:
+            failureThreshold: 50
+            httpGet:
+              path: /findProducts
+              port: http
+            initialDelaySeconds: 1
+            periodSeconds: 10
+            timeoutSeconds: 3
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1500Mi
+            requests:
+              cpu: 500m
+              memory: 1500Mi
+          volumeMounts:
+            - name: configmap
+              mountPath: /home/project/config
+      volumes:
+        - name: configmap
+          configMap:
+            name: configmap

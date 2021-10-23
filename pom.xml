@@ -11,22 +11,27 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>es.nangel.bk8s</groupId>
     <artifactId>perfumeriasloli</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <properties>
         <java.version>11</java.version>
         <java-version>${java.version}</java-version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <version.fabric8.client>5.0.1</version.fabric8.client>
-
+        <k8s.operator-framework.version>1.9.7</k8s.operator-framework.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>kubernetes-client</artifactId>
-            <version>${version.fabric8.client}</version>
+            <groupId>io.javaoperatorsdk</groupId>
+            <artifactId>operator-framework</artifactId>
+            <version>${k8s.operator-framework.version}</version>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>io.fabric8</groupId>-->
+        <!--            <artifactId>crd-generator-apt</artifactId>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -48,12 +53,6 @@
             <artifactId>spring-native</artifactId>
             <version>0.10.3</version>
         </dependency>
-        <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>kubernetes-server-mock</artifactId>
-            <version>${version.fabric8.client}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -62,10 +61,11 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <builder>paketobuildpacks/builder:tiny</builder>
+                        <builder>paketobuildpacks/builder:0.1.96-tiny</builder>
                         <env>
                             <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
                         </env>
+                        <name>${project.artifactId}:${project.version}</name>
                     </image>
                 </configuration>
             </plugin>

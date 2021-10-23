@@ -1,7 +1,0 @@
-cart:
-  enabled: false
-cache:
-  inventory:
-    enabled: true
-scan:
-  enabled: false

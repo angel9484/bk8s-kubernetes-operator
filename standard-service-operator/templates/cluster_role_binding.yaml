@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: standard-service-operator
+subjects:
+  - kind: ServiceAccount
+    name: standard-service-operator
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: standard-service-operator
+  apiGroup: ""
